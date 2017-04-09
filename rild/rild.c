@@ -195,11 +195,15 @@ int main(int argc, char **argv) {
     }
     if (strncmp(clientId, "0", MAX_CLIENT_ID_LENGTH)) {
         strlcat(rild, clientId, MAX_SOCKET_NAME_LENGTH);
+#ifndef RILD_NO_WEAK_SYMBOLS
         if (RIL_setRilSocketName) {
+#endif
             RIL_setRilSocketName(rild);
+#ifndef RILD_NO_WEAK_SYMBOLS
         } else {
             RLOGE("Trying to instantiate multiple rild sockets without a compatible libril!");
         }
+#endif
     }
 #endif
 
