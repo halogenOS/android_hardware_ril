@@ -48,7 +48,12 @@ static void usage(const char *argv0) {
     exit(EXIT_FAILURE);
 }
 
+
+#ifdef RILD_NO_WEAK_SYMBOLS
+extern char rild[MAX_SOCKET_NAME_LENGTH];
+#else
 extern char rild[MAX_SOCKET_NAME_LENGTH] __attribute__((weak));
+#endif
 
 extern void RIL_register (const RIL_RadioFunctions *callbacks);
 
@@ -73,7 +78,11 @@ extern void RIL_onUnsolicitedResponse(int unsolResponse, const void *data,
 extern void RIL_requestTimedCallback (RIL_TimedCallback callback,
         void *param, const struct timeval *relativeTime);
 
+#ifdef RILD_NO_WEAK_SYMBOLS
+extern void RIL_setRilSocketName(char * s);
+#else
 extern void RIL_setRilSocketName(char * s) __attribute__((weak));
+#endif
 
 static struct RIL_Env s_rilEnv = {
     RIL_onRequestComplete,
